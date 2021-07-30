@@ -1,4 +1,4 @@
-import { inserelancamento } from './dynamo.js'
+import { inserelancamento, consultalancamentos } from './dynamo.js'
 import uuid from 'uuid/v4.js';
 import express  from 'express'
 const app = express()
@@ -6,13 +6,16 @@ const port =  process.env.PORT || 3000
 
 const router = express.Router();
 
-router.get('/consulta', (req, res) => {
-
-  inserelancamento(uuid(), '356')
+router.get('/inserevalor/:valor', (req, res) => {
+  inserelancamento(uuid(), valor)
   res.status(200).send({resposta: 'valor inserido com sucesso'})
 })
 
-router.post('/lancamento', (req, res) => {
+router.get('/consulta', (req, res) => {
+  res.status(200).send(consultalancamentos())
+})
+
+router.get('/lancamento', (req, res) => {
   res.status(200)
   res.send('OK')
 })

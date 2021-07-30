@@ -15,8 +15,6 @@ export const inserelancamento = (uuid, valor) => {
       "valor": { N: valor }
     }
   }
-
-  console.log(params)
   
   ddb.putItem(params, function (err, data) {
     if (err) {
@@ -27,6 +25,27 @@ export const inserelancamento = (uuid, valor) => {
   })
 }
 
+export const consultalancamentos = () => {
+
+  AWS.config.update({
+    region: "us-east-2",
+  });
+
+  var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+  var table = "caixa-financeiro";
+
+  var params = {
+    TableName: table
+  }
+
+  ddb.scan(params, function (err, data) {
+    if (err) {
+      console.log("Error" + err);
+    } else {
+      return data.Items
+    }
+  })
+}
 
 
 
