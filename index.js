@@ -24,17 +24,16 @@ const router = express.Router();
 router.get('/consulta', (req, res) => {
 
   console.log("Adding a new item...");
+  var nota = ''
   docClient.put(params, function(err, data) {
     if (err) {
-        console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+        nota = ("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
     } else {
-        console.log("Added item:", JSON.stringify(data, null, 2));
+        nota = ("Added item:", JSON.stringify(data, null, 2));
     }
 });
-
-
   res.status(200).send({saldo: 23,
-  observacao: process.env.PORT})
+  observacao: nota})
 })
 
 router.post('/lancamento', (req, res) => {
