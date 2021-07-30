@@ -2,15 +2,24 @@ const express = require('express')
 const app = express()
 const port = process.env.PORT || 3000
 
-app.get('/', (req, res) => {
+const router = express.Router();
+
+router.get('/consulta', (req, res) => {
+  res.status(200).send({saldo: 23,
+  observacao: 'socorro'})
+})
+
+router.post('/lancamento', (req, res) => {
   res.status(200)
   res.send('OK')
 })
 
-app.get('/health', (req, res) => {
+router.post('/fechamento', (req, res) => {
   res.status(200)
   res.send('OK')
 })
+
+app.use('/birds',router)
 
 app.listen(port, () => {
   console.log(`Sistema inicializado em ${port}`)
