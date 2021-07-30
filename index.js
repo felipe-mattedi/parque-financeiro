@@ -1,12 +1,12 @@
 const express = require('express')
 const app = express()
-const port = 5000
+const port =  process.env.PORT || 3000
 
 const router = express.Router();
 
 router.get('/consulta', (req, res) => {
   res.status(200).send({saldo: 23,
-  observacao: 'socorro'})
+  observacao: process.env.PORT})
 })
 
 router.post('/lancamento', (req, res) => {
