@@ -7,14 +7,14 @@ AWS.config.update({
   region: "us-east-2",
 });
 
-var docClient = new AWS.DynamoDB.DocumentClient();
+var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 var table = "caixa-financeiro";
 
 var params = {
-  TableName:table,
+  TableName: table,
   Item:{
-      "id_lancamento": "00001",
-      "title": "valor"
+      "id_lancamento": {S: '001'},
+      "title": {S: 'Richard Roe'}
   }
 };
 
@@ -25,13 +25,13 @@ router.get('/consulta', (req, res) => {
 
   console.log("Adding a new item...");
   var nota = ''
-  docClient.put(params, function(err, data) {
+  ddb.putItem(params, function(err, data) {
     if (err) {
-        nota = ("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+     nota = ("Error" + err);
     } else {
-        nota = ("Added item:", JSON.stringify(data, null, 2));
+      nota = ("Success" + data);
     }
-});
+  });
   res.status(200).send({saldo: 23,
   observacao: nota})
 })
