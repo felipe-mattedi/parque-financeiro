@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/consulta', (req, res) => {
 
-  inserelancamento(uuid(), 356)
+  inserelancamento(uuid(), '356')
   res.status(200).send({resposta: 'valor inserido com sucesso'})
 })
 
