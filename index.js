@@ -7,7 +7,7 @@ const port =  process.env.PORT || 3000
 const router = express.Router();
 
 router.get('/inserevalor/:valor', (req, res) => {
-  inserelancamento(uuid(), valor)
+  inserelancamento(uuid(), req.params.valor)
   res.status(200).send({resposta: 'valor inserido com sucesso'})
 })
 
