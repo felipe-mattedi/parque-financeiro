@@ -19,7 +19,7 @@ router.post('/fechamento', (req, res) => {
   res.send('OK')
 })
 
-app.use('/birds',router)
+app.use('/',router)
 
 app.listen(port, () => {
   console.log(`Sistema inicializado em ${port}`)
