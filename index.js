@@ -1,15 +1,14 @@
-import { inserelancamento } from 'dynamo.js'
-import { v4 as uuidv4 } from 'uuid'
-const express = require('express')
+import { inserelancamento } from './dynamo.js'
+import uuid from 'uuid/v4.js';
+import express  from 'express'
 const app = express()
 const port =  process.env.PORT || 3000
-
 
 const router = express.Router();
 
 router.get('/consulta', (req, res) => {
 
-  inserelancamento(uuidv4(), 356)
+  inserelancamento(uuid(), 356)
   res.status(200).send({resposta: 'valor inserido com sucesso'})
 })
 

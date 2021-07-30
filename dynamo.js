@@ -1,4 +1,4 @@
-var AWS = require("aws-sdk");
+import AWS from 'aws-sdk'
 var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 var table = "caixa-financeiro";
 
@@ -18,9 +18,9 @@ export const inserelancamento = (uuid, valor) => {
   
   ddb.putItem(params, function (err, data) {
     if (err) {
-      nota = ("Error" + err);
+      console.log("Error" + err);
     } else {
-      nota = ("Success" + data);
+      console.log("Success" + data);
     }
   })
 }
