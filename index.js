@@ -37,6 +37,11 @@ router.get('/consulta', async (req, res) => {
   }
 })
 
+router.get('/', async (req, res) => {
+    res.status(200).send()
+  }
+)
+
 
 inicializaaws()
 app.use(bodyParser())
