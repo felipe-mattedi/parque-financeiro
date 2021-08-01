@@ -1,50 +1,50 @@
 import AWS from 'aws-sdk'
-export const inserelancamento = (uuid, valor) => {
 
+let ddb
+let table
+
+export const inicializaaws = () => {
   AWS.config.update({
     region: "us-east-2",
   });
-
-  var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
-  var table = "caixa-financeiro";
-
-  var params = {
-    TableName: table,
-    Item: {
-      "id_lancamento": { S: uuid },
-      "valor": { N: valor }
-    }
-  }
-  
-  ddb.putItem(params, function (err, data) {
-    if (err) {
-      console.log("Error" + err);
-    } else {
-      console.log("Success" + data);
-    }
-  })
+  ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
+  table = "caixa-financeiro";
 }
 
-export const consultalancamentos = () => {
+export const inserelancamento = async (uuid, valor, descr) => {
 
-  AWS.config.update({
-    region: "us-east-2",
-  });
+  const params = {
+    TableName: table,
+    Item: {
+      "id_lancamento":  {S: uuid} ,
+      "valor": {N: valor},
+      "descricao": {S: descr}}
+  }
+  
+  return new Promise( (resolve, reject) => {
+  ddb.putItem(params, function (err, data) {
+    if (err) {
+      reject(err)
+    } else {
+      resolve(data);
+    }})
+})
+}
 
-  var ddb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
-  var table = "caixa-financeiro";
+export const consultalancamentos = async () => {
 
-  var params = {
+  const params = {
     TableName: table
   }
-
-  ddb.scan(params, function (err, data) {
-    if (err) {
-      return err
-    } else {
-      return data
-    }
-  })
+    return new Promise( (resolve, reject) => {
+      ddb.scan(params, function (err, data) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(data.Items)
+        }
+      })
+    })
 }
 
 
