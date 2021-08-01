@@ -8,6 +8,10 @@ const port =  process.env.PORT || 3000
 const router = express.Router();
 
 router.post('/lancamento', async (req, res) => {
+  if(!req.body.descricao || !req.body.valor){
+    res.status(400).send({status: "NOK", motivo: "Campo 'desricao' e 'valor' são obrigatórios para lancamentos"})
+    return
+  }
   try{
     let uuidv4 = uuid()
     await inserelancamento(uuidv4, req.body.valor, req.body.descricao)
