@@ -4,6 +4,7 @@ import express  from 'express'
 import bodyParser from 'body-parser'
 import  logger  from './logger.js'
 import { inicializalogger, inicializacatcher }from './middleware.js'
+import axios from 'axios'
 const app = express()
 const port =  process.env.PORT || 3000
 
@@ -34,6 +35,25 @@ router.get('/consulta', async (req, res, next) => {
     }
     consulta.push({saldo_total: saldo}) 
     res.status(200).send(consulta)
+  }
+  catch(resposta){
+    res.status(resposta.statusCode || 500)
+    next(resposta)
+  }
+})
+
+
+router.get('/balanco', async (req, res, next) => {
+  let creditoinicial = 0
+  let valor = 0
+  try{
+    let resposta = await axios.get('http://parque-ingressos.herokuapp.com/exportacompras')
+    for(const k in resposta.data){
+      creditoinicial = creditoinicial + resposta.data[k].creditoInicial
+      valor = valor +  resposta.data[k].valor
+    }
+    let total = creditoinicial + valor
+    res.status(200).send({creditoinicial: creditoinicial, valor: valor, total: total})
   }
   catch(resposta){
     res.status(resposta.statusCode || 500)
