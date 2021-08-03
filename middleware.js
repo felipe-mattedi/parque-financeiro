@@ -2,6 +2,7 @@ import  logger  from './logger.js'
 
 export const inicializalogger = () => {
   var logs = function (req, res, next) {
+    if(req.path = '/') next()
     logger.info(`Acesso em API ${req.path}`)
     next();
   };
