@@ -2,6 +2,8 @@ import { inserelancamento, consultalancamentos, inicializaaws } from './dynamo.j
 import uuid from 'uuid/v4.js';
 import express  from 'express'
 import bodyParser from 'body-parser'
+import  logger  from './logger.js'
+import { inicializalogger, inicializacatcher }from './middleware.js'
 const app = express()
 const port =  process.env.PORT || 3000
 
@@ -18,11 +20,12 @@ router.post('/lancamento', async (req, res) => {
     res.status(200).send({status: 'OK', id: uuidv4})
   }
   catch(resposta){
-    res.status(resposta.statusCode || 500).send(resposta || '')
+    res.status(resposta.statusCode || 500)
+    next(resposta)
   }
 })
 
-router.get('/consulta', async (req, res) => {
+router.get('/consulta', async (req, res, next) => {
   try{
     let consulta = await consultalancamentos()
     let saldo = 0
@@ -33,7 +36,8 @@ router.get('/consulta', async (req, res) => {
     res.status(200).send(consulta)
   }
   catch(resposta){
-    res.status(resposta.statusCode || 500).send(resposta)
+    res.status(resposta.statusCode || 500)
+    next(resposta)
   }
 })
 
@@ -45,7 +49,9 @@ router.get('/', async (req, res) => {
 
 inicializaaws()
 app.use(bodyParser())
+app.use(inicializalogger())
 app.use('/',router)
+app.use(inicializacatcher())
 app.listen(port, () => {
-  console.log(`Sistema inicializado em ${port}`)
+  logger.info(`SERVIDOR EM LISTEN - PORTA ${port}`)
 })
