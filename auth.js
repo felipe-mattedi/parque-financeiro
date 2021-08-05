@@ -34,12 +34,12 @@ export const autenticador =  () => {
     try{
       let resultado = await axios.post("https://radiant-forest-78564.herokuapp.com/login/authorize", {
       "token": req.header('authorization')})
-      next()
     }
     catch(erro){
       res.status(403).send('Acesso Negado')
     }
   }
+  next()
 }
   return auth
 }
