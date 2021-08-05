@@ -6,8 +6,6 @@ let authresponse
 
 export const tryauth = () => {
   let verificatoken = async function (req,res,next){
-    console.log('verificação de token')
-    console.log(authresponse)
     if(!authresponse){
     logger.info(`Tentativa de autenticação`)
     try{
@@ -31,6 +29,7 @@ export const tryauth = () => {
 
 export const autenticador =  () => {
   let auth =  async function (req, res, next) {
+    if(req.path != '/'){
     logger.info(`Verificação de token`)
     try{
       let resultado = await axios.post("https://radiant-forest-78564.herokuapp.com/login/authorize", {
@@ -41,6 +40,7 @@ export const autenticador =  () => {
       res.status(403).send('Acesso Negado')
     }
   }
+}
   return auth
 }
 
