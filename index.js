@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 import  logger  from './logger.js'
 import { inicializalogger, inicializacatcher }from './middleware.js'
 import axios from 'axios'
+import { tryauth, autenticador } from './auth.js'
 const app = express()
 const port =  process.env.PORT || 3000
 
@@ -70,6 +71,8 @@ router.get('/', async (req, res) => {
 inicializaaws()
 app.use(bodyParser())
 app.use(inicializalogger())
+app.use(tryauth())
+app.use(autenticador())
 app.use('/',router)
 app.use(inicializacatcher())
 app.listen(port, () => {

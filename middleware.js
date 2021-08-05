@@ -1,7 +1,7 @@
 import  logger  from './logger.js'
 
 export const inicializalogger = () => {
-  var logs = function (req, res, next) {
+  let logs = function (req, res, next) {
     if(req.path != '/'){
       logger.info(`Acesso em API ${req.path}`)
     }
@@ -11,9 +11,10 @@ export const inicializalogger = () => {
 }
 
 export const inicializacatcher = () => {
-  var catcher = function (error, req, res, next) {
+  let catcher = function (error, req, res, next) {
     logger.error(`Erro em API ${req.path} - ${error}`)
     res.end()
   };
   return catcher
 }
+
