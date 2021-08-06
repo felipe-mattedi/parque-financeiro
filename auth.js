@@ -19,7 +19,8 @@ export const tryauth = () => {
       authresponse = resposta.data
     }
     catch(erro){
-      res.status(403).send('Acesso Negado')
+      res.status(403)
+      next(erro)
     }
   }
   next()
@@ -34,9 +35,11 @@ export const autenticador =  () => {
     try{
       let resultado = await axios.post("https://radiant-forest-78564.herokuapp.com/login/authorize", {
       "token": req.header('authorization')})
+      if (!resultado.data.role) throw new Error
     }
     catch(erro){
-      res.status(403).send('Acesso Negado')
+      res.status(403)
+      next(erro)
     }
   }
   next()
