@@ -5,7 +5,7 @@ import bodyParser from 'body-parser'
 import  logger  from './logger.js'
 import { inicializalogger, inicializacatcher }from './middleware.js'
 import axios from 'axios'
-import { gettoken, autenticador } from './auth.js'
+import { gettoken, autenticador, deletetoken } from './auth.js'
 const app = express()
 const port =  process.env.PORT || 3000
 
@@ -65,6 +65,12 @@ router.get('/balanco', async (req, res, next) => {
     next(resposta)
   }
 })
+
+router.delete('/token', async (req, res) => {
+  deletetoken()
+  res.status(200).send()
+}
+)
 
 router.get('/', async (req, res) => {
     res.status(200).send()

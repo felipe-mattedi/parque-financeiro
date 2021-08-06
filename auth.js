@@ -4,6 +4,11 @@ import { getParam } from './ssm.js'
 
 let authresponse
 
+export const deletetoken = () => {
+  authresponse = ''
+  return
+}
+
 export const gettoken = async () => {
     if(!authresponse){
     logger.info(`Tentativa de autenticação`)
@@ -15,10 +20,12 @@ export const gettoken = async () => {
         "user": user,
         "pass": pass
         })
+      logger.info(`Token obtido com sucesso`)
       authresponse = resposta.data
       return authresponse
     }
     catch(erro){
+      logger.info(`Falha na obtenção do Token`)
       throw erro
     }
   }
