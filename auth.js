@@ -4,8 +4,7 @@ import { getParam } from './ssm.js'
 
 let authresponse
 
-export const tryauth = () => {
-  let verificatoken = async function (req,res,next){
+export const gettoken = async () => {
     if(!authresponse){
     logger.info(`Tentativa de autenticação`)
     try{
@@ -17,16 +16,15 @@ export const tryauth = () => {
         "pass": pass
         })
       authresponse = resposta.data
+      return authresponse
     }
     catch(erro){
-      res.status(403)
-      next(erro)
+      throw erro
     }
   }
-  next()
+    return authresponse
 }
-  return verificatoken
-}
+
 
 export const autenticador =  () => {
   let auth =  async function (req, res, next) {
@@ -35,7 +33,7 @@ export const autenticador =  () => {
     try{
       let resultado = await axios.post("https://radiant-forest-78564.herokuapp.com/login/authorize", {
       "token": req.header('authorization')})
-      if (!resultado.data.role) throw new Error
+      if (!resultado.data.role) throw new Error('Não existe regra associada')
     }
     catch(erro){
       res.status(403)
