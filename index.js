@@ -6,6 +6,7 @@ import logger from './logger.js'
 import { inicializalogger, inicializacatcher } from './middleware.js'
 import axios from 'axios'
 import { gettoken, autenticador, deletetoken } from './auth.js'
+import { redisc } from './elasticache.js'
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -84,6 +85,7 @@ app.use(inicializalogger())
 app.use(autenticador())
 app.use('/', router)
 app.use(inicializacatcher())
+redisc()
 app.listen(port, () => {
   logger.info(`SERVIDOR EM LISTEN - PORTA ${port}`)
 })
