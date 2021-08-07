@@ -1,3 +1,27 @@
+files:
+  "/opt/aws/amazon-cloudwatch-agent/bin/config.json":
+    mode: "000755"
+    owner: root
+    group: root
+    content: |
+      {
+"agent": {
+"run_as_user": "root"
+},
+"logs": {
+"logs_collected": {
+"files": {
+"collect_list": [
+{
+"file_path": "/var/app/current/info.log",
+"log_group_name": "info.log",
+"log_stream_name": "{instance_id}"
+}
+]
+}
+}
+}
+}
 commands:
-  create_post_dir:
+  start_agent:
     command: "sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json -s"
