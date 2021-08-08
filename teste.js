@@ -1,5 +1,5 @@
-const RedisClustr = require('redis-clustr')
-const RedisClient = require('redis');
+import RedisClustr from 'redis-clustr'
+import RedisClient from 'redis';
 
 
   var redis = new RedisClustr({
