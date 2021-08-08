@@ -16,16 +16,47 @@ import RedisClient from 'redis';
   
   console.log('tentativa conexao')
   //connect to redis
-  redis.on("connect", function () {
-    console.log("connected");
-  });
+
+
+  export const conectacache = async () => {
+    return new Promise( (resolve, reject) => {
+      redis.on("connect", function (err, data) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
+}
   
-  //check the functioning
-  redis.set("framework", "AngularJS", function (err, reply) {
-    console.log("redis.set " , reply);
+
+  export const inserechache = async (chave, valor) => {
+      return new Promise( (resolve, reject) => {
+        redis.set(chave, valor, function (err, data) {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(data)
+          }
+        })
+      })
+  }
   
-  });
-  
-  redis.get("framework", function (err, reply) {
-    console.log("redis.get " , reply);
-  });
+  export const recuperacache = async (chave) => {
+    return new Promise( (resolve, reject) => {
+      redis.get(chave, function (err, data) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(data)
+        }
+      })
+    })
+}
+
+await conectacache()
+console.log('tentativa inserção')
+console.log(await inserechache("resultado","felipe"))
+console.log('tentativa leitura')
+console.log(await recuperacache("resultado"))
