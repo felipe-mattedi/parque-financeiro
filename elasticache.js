@@ -1,14 +1,14 @@
 import RedisClient from 'redis';
 import logger from './logger.js'
     
+  var redis
 
   export const conectacache = async () => {
 
-    var redis = RedisClient.createClient({
+    redis = RedisClient.createClient({
       host: 'cache-parque-fin.z4xuiz.0001.use2.cache.amazonaws.com',
       port: 6379
     });
-
     logger.info('TENTATIVA DE CONEXÃO - REDIS')
     return new Promise( (resolve, reject) => {
       redis.on("connect", function (err, data) {
@@ -64,9 +64,3 @@ export const deletacache = async (chave) => {
       })
     })
 }
-
-await conectacache()
-console.log('tentativa inserção')
-console.log(await inserechache("resultado","felipe"))
-console.log('tentativa leitura')
-console.log(await recuperacache("resultado"))
