@@ -6,7 +6,8 @@ import logger from './logger.js'
 import { inicializalogger, inicializacatcher } from './middleware.js'
 import axios from 'axios'
 import { gettoken, autenticador, deletetoken } from './auth.js'
-import { redisc } from './elasticache.js'
+import { conectacache, inserechache, deletacache, recuperacache } from './elasticache.js'
+import { conectacache } from './teste.js';
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -30,6 +31,9 @@ router.post('/lancamento', async (req, res) => {
 
 router.get('/consulta', async (req, res, next) => {
   try {
+    let cache = await recuperacache()
+    console.log(cache)
+    console.log(typeof(cache))
     let consulta = await consultalancamentos()
     let saldo = 0
     for (const k in consulta) {
@@ -80,12 +84,12 @@ router.get('/', async (req, res) => {
 
 
 inicializaaws()
+await conectacache()
 app.use(bodyParser())
 app.use(inicializalogger())
 app.use(autenticador())
 app.use('/', router)
 app.use(inicializacatcher())
-redisc()
 app.listen(port, () => {
   logger.info(`SERVIDOR EM LISTEN - PORTA ${port}`)
 })
