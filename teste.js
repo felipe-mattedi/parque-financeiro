@@ -2,21 +2,12 @@ import RedisClustr from 'redis-clustr'
 import RedisClient from 'redis';
 
 
-  var redis = new RedisClient({
-    servers: [
-        {
-            host: 'cache-parque-fin.z4xuiz.0001.use2.cache.amazonaws.com',
-            port: 6379
-        }
-    ],
-    createClient: function (port, host) {
-        return RedisClient.createClient(port, host);
-    }
+  var redis = RedisClient.createClient({
+    host: 'cache-parque-fin.z4xuiz.0001.use2.cache.amazonaws.com',
+    port: 6379
   });
-  
+    
   console.log('tentativa conexao')
-  //connect to redis
-
 
   export const conectacache = async () => {
     return new Promise( (resolve, reject) => {
