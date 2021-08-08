@@ -7,7 +7,6 @@ import { inicializalogger, inicializacatcher } from './middleware.js'
 import axios from 'axios'
 import { gettoken, autenticador, deletetoken } from './auth.js'
 import { conectacache, inserechache, deletacache, recuperacache } from './elasticache.js'
-import { conectacache } from './teste.js';
 const app = express()
 const port = process.env.PORT || 3000
 

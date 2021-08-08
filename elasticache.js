@@ -1,4 +1,5 @@
 import RedisClient from 'redis';
+import logger from './logger.js'
     
 
   export const conectacache = async () => {
