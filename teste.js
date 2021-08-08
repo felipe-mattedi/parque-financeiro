@@ -2,7 +2,7 @@ import RedisClustr from 'redis-clustr'
 import RedisClient from 'redis';
 
 
-  var redis = new RedisClustr({
+  var redis = new RedisClient({
     servers: [
         {
             host: 'cache-parque-fin.z4xuiz.0001.use2.cache.amazonaws.com',
