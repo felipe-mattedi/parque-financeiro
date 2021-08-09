@@ -31,8 +31,8 @@ router.post('/lancamento', async (req, res) => {
 router.get('/consulta', async (req, res, next) => {
   try {
     let cache = await recuperacache("consulta")
-    console.log(cache)
-    console.log(typeof(cache))
+    logger.info(cache)
+    logger.info(typeof(cache))
     let consulta = await consultalancamentos()
     let saldo = 0
     for (const k in consulta) {
