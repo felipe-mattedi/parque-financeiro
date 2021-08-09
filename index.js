@@ -18,6 +18,7 @@ router.post('/lancamento', async (req, res) => {
     return
   }
   try {
+    await deletacache()
     let uuidv4 = uuid()
     await inserelancamento(uuidv4, req.body.valor, req.body.descricao)
     res.status(200).send({ status: 'OK', id: uuidv4 })
@@ -30,15 +31,20 @@ router.post('/lancamento', async (req, res) => {
 
 router.get('/consulta', async (req, res, next) => {
   try {
-    let cache = await recuperacache("consulta")
-    logger.info(cache)
-    logger.info(typeof(cache))
-    let consulta = await consultalancamentos()
-    let saldo = 0
-    for (const k in consulta) {
-      saldo = saldo + parseFloat(consulta[k].valor.N)
+    let consulta = await recuperacache("consulta")
+    logger.info(consulta)
+    if(consulta === null){
+      consulta = await consultalancamentos()
+      await inserechache("consulta", consulta)
     }
+      let saldo = 0
+      for (const k in consulta) {
+      saldo = saldo + parseFloat(consulta[k].valor.N)
+    
     consulta.push({ saldo_total: saldo })
+
+    }
+    
     res.status(200).send(consulta)
   }
   catch (resposta) {
