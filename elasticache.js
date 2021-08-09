@@ -28,7 +28,7 @@ import { getParam } from './ssm.js'
 
 export const deletacache = async (chave) => {
   return new Promise( (resolve, reject) => {
-    redis.del(chave, valor, function (err, data) {
+    redis.del(chave, function (err, data) {
       if (err) {
         logger.info('FALHA DELEÇÃO CACHE - REDIS')
         reject(err)
