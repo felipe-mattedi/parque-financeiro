@@ -1,12 +1,13 @@
 import RedisClient from 'redis';
 import logger from './logger.js'
+import { getParam } from './ssm.js'
     
   var redis
 
   export const conectacache = async () => {
 
     redis = RedisClient.createClient({
-      host: 'cache-parque-fin.z4xuiz.0001.use2.cache.amazonaws.com',
+      host:  await getParam("elasticache"),
       port: 6379
     });
     logger.info('TENTATIVA DE CONEXÃO - REDIS')
