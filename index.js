@@ -33,7 +33,7 @@ router.get('/consulta', async (req, res, next) => {
   try {
     let consulta = await recuperacache("consulta")
     logger.info(consulta)
-    if(consulta === null){
+    if(!consulta){ 
       consulta = await consultalancamentos()
       await inserechache("consulta", consulta)
     }
