@@ -6,8 +6,10 @@ import { getParam } from './ssm.js'
 
   export const conectacache = async () => {
 
+    let host = await getParam("elasticache")
+
     redis = RedisClient.createClient({
-      host:  await getParam("elasticache"),
+      host:  `${host.Parameter.Value}`,
       port: 6379
     });
     logger.info('TENTATIVA DE CONEXÃO - REDIS')
