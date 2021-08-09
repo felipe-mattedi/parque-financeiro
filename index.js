@@ -35,7 +35,10 @@ router.get('/consulta', async (req, res, next) => {
     logger.info(consulta)
     if(!consulta){ 
       consulta = await consultalancamentos()
-      await inserechache("consulta", consulta)
+      await inserechache("consulta", JSON.stringify(consulta))
+    }
+    else{
+      consulta = JSON.parse(consulta)
     }
       let saldo = 0
       for (const k in consulta) {
