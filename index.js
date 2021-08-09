@@ -42,11 +42,9 @@ router.get('/consulta', async (req, res, next) => {
       let saldo = 0
       for (const k in consulta) {
       saldo = saldo + parseFloat(consulta[k].valor.N)
-    
-    consulta.push({ saldo_total: saldo })
-
     }
     
+    consulta.push({ saldo_total: saldo })
     res.status(200).send(consulta)
   }
   catch (resposta) {
