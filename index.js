@@ -18,7 +18,7 @@ router.post('/lancamento', async (req, res) => {
     return
   }
   try {
-    await deletacache()
+    await deletacache("consulta")
     let uuidv4 = uuid()
     await inserelancamento(uuidv4, req.body.valor, req.body.descricao)
     res.status(200).send({ status: 'OK', id: uuidv4 })
@@ -32,7 +32,6 @@ router.post('/lancamento', async (req, res) => {
 router.get('/consulta', async (req, res, next) => {
   try {
     let consulta = await recuperacache("consulta")
-    logger.info(consulta)
     if(!consulta){ 
       consulta = await consultalancamentos()
       await inserechache("consulta", JSON.stringify(consulta))
