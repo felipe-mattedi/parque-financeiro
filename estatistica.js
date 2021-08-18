@@ -42,8 +42,7 @@ function inserecw(api, tempo){
 }
 
 export const starttime = () => {
-  let iniciatempo = function(req, res, next)
-    {
+  let iniciatempo = function(req, res, next){
     start = new Date()
     next()
   }

@@ -4,9 +4,22 @@ import { getParam } from './ssm.js'
 
 let authresponse
 
-export const deletetoken = () => {
-  authresponse = ''
-  return
+export const deletetoken = async () => {
+  if(authresponse){
+    logger.info(`Exclusão de Token`)
+    try{
+      let resposta = await axios.post("https://radiant-forest-78564.herokuapp.com/login/logoff",{
+        "token": authresponse
+        })
+      logger.info(`Token excluído com sucesso`)
+      authresponse = ''
+      return
+    }
+    catch(erro){
+      logger.info(`Falha na deleção do Token`)
+      throw erro
+    }
+ }
 }
 
 export const gettoken = async () => {
@@ -22,6 +35,7 @@ export const gettoken = async () => {
         })
       logger.info(`Token obtido com sucesso`)
       authresponse = resposta.data
+      console.log(authresponse)
       return authresponse
     }
     catch(erro){

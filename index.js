@@ -96,14 +96,25 @@ router.get('/', async (req, res, next) => {
 
 inicializaaws()
 inicializametrics()
-await conectacache()
+//await conectacache()
 app.use(bodyParser())
 app.use(inicializalogger())
-app.use(autenticador())
 app.use(starttime())
+app.use(autenticador())
 app.use('/', router)
 app.use(inicializacatcher())
 app.use(endtime())
-app.listen(port, () => {
+const server = app.listen(port, () => {
   logger.info(`SERVIDOR EM LISTEN - PORTA ${port}`)
 })
+
+process.on('SIGTERM', shutDown);
+process.on('SIGINT', shutDown);
+process.on('SIGKILL', shutDown);
+
+async function shutDown() {
+  logger.info(`TERMINO DO SISTEMA`)
+  await deletetoken()
+  server.close(() => {
+      process.exit(0);
+  })} 
