@@ -6,22 +6,24 @@ import logger from './logger.js'
 import { inicializalogger, inicializacatcher } from './middleware.js'
 import axios from 'axios'
 import { gettoken, autenticador, deletetoken } from './auth.js'
+import { inicializametrics, starttime, endtime } from './estatistica.js'
 import { conectacache, inserechache, deletacache, recuperacache } from './elasticache.js'
 const app = express()
 const port = process.env.PORT || 3000
 
 const router = express.Router();
 
-router.post('/lancamento', async (req, res) => {
+router.post('/lancamento', async (req, res, next) => {
   if (!req.body.descricao || !req.body.valor) {
     res.status(400).send({ status: "NOK", motivo: "Campo 'desricao' e 'valor' são obrigatórios para lancamentos" })
-    return
+    next()
   }
   try {
     await deletacache("consulta")
     let uuidv4 = uuid()
     await inserelancamento(uuidv4, req.body.valor, req.body.descricao)
     res.status(200).send({ status: 'OK', id: uuidv4 })
+    next()
   }
   catch (resposta) {
     res.status(resposta.statusCode || 500)
@@ -46,6 +48,7 @@ router.get('/consulta', async (req, res, next) => {
     
     consulta.push({ saldo_total: saldo })
     res.status(200).send(consulta)
+    next()
   }
   catch (resposta) {
     res.status(resposta.statusCode || 500)
@@ -69,6 +72,7 @@ router.get('/balanco', async (req, res, next) => {
     }
     let total = creditoinicial + valor
     res.status(200).send({ creditoinicial: creditoinicial, valor: valor, total: total })
+    next()
   }
   catch (resposta) {
     res.status(resposta.response.status || 500)
@@ -76,25 +80,30 @@ router.get('/balanco', async (req, res, next) => {
   }
 })
 
-router.delete('/token', async (req, res) => {
+router.delete('/token', async (req, res, next) => {
   deletetoken()
   res.status(200).send()
+  next()
 }
 )
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   res.status(200).send()
+  next()
 }
 )
 
 
 inicializaaws()
-await conectacache()
+inicializametrics()
+//await conectacache()
 app.use(bodyParser())
 app.use(inicializalogger())
 app.use(autenticador())
+app.use(starttime())
 app.use('/', router)
 app.use(inicializacatcher())
+app.use(endtime())
 app.listen(port, () => {
   logger.info(`SERVIDOR EM LISTEN - PORTA ${port}`)
 })

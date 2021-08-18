@@ -14,6 +14,7 @@ export const inicializacatcher = () => {
   let catcher = function (error, req, res, next) {
     logger.error(`Erro em API ${req.path} - ${error}`)
     res.send('Não foi possível efetuar a solicitação')
+    next()
   };
   return catcher
 }
