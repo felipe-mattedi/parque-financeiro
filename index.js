@@ -107,4 +107,3 @@ app.use(inicializacatcher())
 app.listen(port, () => {
   logger.info(`SERVIDOR EM LISTEN - PORTA ${port}`)
 })
-//
