@@ -53,7 +53,9 @@ export const starttime = () => {
 export const endtime = () => {
   let finalizatempo = function (req,res,next){
     end = new Date() - start
-    inserecw(req.path, end)
+    if(req.path != '/'){
+      inserecw(req.path, end)
+    }
     next()
   }
   return finalizatempo
