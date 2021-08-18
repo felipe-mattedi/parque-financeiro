@@ -6,7 +6,7 @@ let cw
 
 export const inicializametrics = () => {
   AWS.config.update({
-    region: "us-east-2",
+    region: "us-east-2"
   });
   cw = new AWS.CloudWatch({apiVersion: '2010-08-01'});
 }
@@ -23,7 +23,7 @@ function inserecw(api, tempo){
             Value: api || 'N/A',
           },
         ],
-        Unit: 'ms',
+        Unit: "Milliseconds",
         Value: tempo
       },
     ],
