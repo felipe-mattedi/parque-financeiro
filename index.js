@@ -110,7 +110,6 @@ const server = app.listen(port, () => {
 
 process.on('SIGTERM', shutDown);
 process.on('SIGINT', shutDown);
-process.on('SIGKILL', shutDown);
 
 async function shutDown() {
   logger.info(`TERMINO DO SISTEMA`)
