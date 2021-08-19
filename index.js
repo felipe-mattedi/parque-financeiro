@@ -97,7 +97,7 @@ router.get('/', async (req, res, next) => {
 
 inicializaaws()
 inicializametrics()
-//await conectacache()
+await conectacache()
 app.use(bodyParser())
 app.use(inicializalogger())
 app.use(AWSXRay.express.openSegment('Parque-Financeiro'))
