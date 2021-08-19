@@ -1,6 +1,7 @@
 import RedisClient from 'redis';
 import logger from './logger.js'
 import { getParam } from './ssm.js'
+import AWSXRay from 'aws-xray-sdk'
     
   var redis
 
@@ -56,6 +57,7 @@ export const deletacache = async (chave) => {
   
   export const recuperacache = async (chave) => {
     return new Promise( (resolve, reject) => {
+      AWSXRay.express.openSegment('Redis')
       redis.get(chave, function (err, data) {
         if (err) {
           logger.info('FALHA RECUPERAÇÃO CACHE - REDIS')
@@ -65,5 +67,6 @@ export const deletacache = async (chave) => {
           resolve(data)
         }
       })
+      AWSXRay.express.closeSegment()
     })
 }
