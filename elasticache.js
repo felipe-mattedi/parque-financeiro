@@ -57,7 +57,7 @@ export const deletacache = async (chave) => {
   
   export const recuperacache = async (chave) => {
     return new Promise( (resolve, reject) => {
-      AWSXRay.express.openSegment('Redis')
+      AWSXRay.express.BeginSubsegment('Redis')
       redis.get(chave, function (err, data) {
         if (err) {
           logger.info('FALHA RECUPERAÇÃO CACHE - REDIS')
@@ -67,6 +67,6 @@ export const deletacache = async (chave) => {
           resolve(data)
         }
       })
-      AWSXRay.express.closeSegment()
+      AWSXRay.express.EndSubsegment()
     })
 }
