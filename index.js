@@ -8,6 +8,7 @@ import axios from 'axios'
 import { gettoken, autenticador, deletetoken } from './auth.js'
 import { inicializametrics, starttime, endtime } from './estatistica.js'
 import { conectacache, inserechache, deletacache, recuperacache } from './elasticache.js'
+import AWSXRay from 'aws-xray-sdk'
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -96,13 +97,15 @@ router.get('/', async (req, res, next) => {
 
 inicializaaws()
 inicializametrics()
-await conectacache()
+//await conectacache()
 app.use(bodyParser())
 app.use(inicializalogger())
+app.use(AWSXRay.express.openSegment('Parque-Financeiro'))
 app.use(starttime())
 app.use(autenticador())
 app.use('/', router)
 app.use(inicializacatcher())
+app.use(AWSXRay.express.closeSegment());
 app.use(endtime())
 const server = app.listen(port, () => {
   logger.info(`SERVIDOR EM LISTEN - PORTA ${port}`)
